@@ -16,10 +16,10 @@
     
       <Border Margin="5" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="1" BorderBrush="#eeeeee">
       <ScrollViewer  >    
-        <TextBlock Margin="2"  FontSize="22" Foreground="#00aa00" Text="{Binding ConsoleText}"/>
+        <TextBlock Margin="2"  FontSize="22" Foreground="#aaaaaa" Text="{Binding ConsoleText}"/>
     </ScrollViewer>
       </Border>
     <TextBox Margin="5" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Command}"/>
-    <Button Margin="5" Grid.Column="3" Grid.Row="2" Content="Send" Command="{Binding SendCommand}"/>
+    <Button Margin="5" Grid.Column="3" Grid.Row="2" Content="Send" HotKey="Enter" Command="{Binding SendCommand}"/>
   </Grid>
 </UserControl>

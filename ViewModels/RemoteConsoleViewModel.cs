@@ -20,7 +20,7 @@ namespace Rcon.ViewModels
             }
         }
 
-        private string command;
+        private string command = string.Empty;
         public string Command
         {
             get => command; 
@@ -52,7 +52,7 @@ namespace Rcon.ViewModels
             {    
 			    var resp = await remoteConsole.SendCommandAsync(cmd);
                 if(!string.IsNullOrWhiteSpace(resp))
-                    ConsoleText += resp + "\n";
+                    ConsoleText += resp;
             }
         }
     }
