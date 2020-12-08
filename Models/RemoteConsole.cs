@@ -55,6 +55,7 @@ namespace Rcon.Models
         }
         public bool Connect()
         {
+            Console.WriteLine($"Connecting to {IP}:{Port}");
             Client.Close();
             Client = new UdpClient();
             try
@@ -74,6 +75,9 @@ namespace Rcon.Models
 
             return false;
         }
+
+        public Task<bool> ConnectAsync() => Task.Run(Connect);
+
         public string SendCommand(string command)
         {
             if (string.IsNullOrWhiteSpace(challenge))
@@ -103,12 +107,14 @@ namespace Rcon.Models
                 while (Client.Available > 0);
 
             }
-            catch (SocketException e)
+            catch (SocketException e) when (e.SocketErrorCode == SocketError.TimedOut)
             {
             } 
             var res = sb.ToString();
-            return res.Length == 0 ? "Unable to get response from server" : res;
+            return res.Length == 0 ? "Unable to get response from server" : res.Substring(1);
         }
+		
+		public Task<string> SendCommandAsync(string command) => Task.Run(() => SendCommand(command));
 
         private byte[] CreateCommand(string command)
         {

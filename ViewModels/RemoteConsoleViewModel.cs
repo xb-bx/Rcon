@@ -31,31 +31,28 @@ namespace Rcon.ViewModels
         }
 
 
-        private RemoteConsole remoteConsole = new RemoteConsole(null, 9, null);
-        public void Connect()
+        private RemoteConsole remoteConsole = new RemoteConsole(null, 0, null);
+        public async void Connect()
         {
+            System.Console.WriteLine($"0 Connecting to {IP}:{Port}");
+
             remoteConsole.IP = IP;
             remoteConsole.Port = int.Parse(Port);
             remoteConsole.Password = RconPassword;
-            Task.Run(() => 
-            {
-                if(remoteConsole.Connect())
-                    ConsoleText = "Connected succesful!";
-                else
-                    ConsoleText = "Unable to connect to server or incorrect rcon password!"; 
-            });
+            
+            if(await remoteConsole.ConnectAsync())
+                ConsoleText = "Connected succesful!\n";
+            else
+                ConsoleText = "Unable to connect to server or incorrect rcon password!";  
         }
-        public void SendCommand(){
+        public async void SendCommand(){
             var cmd = Command.Trim();
             Command = string.Empty;
             if(!string.IsNullOrWhiteSpace(cmd))
-            {			
-                new Task(() => 
-                {    
-			        var resp = remoteConsole.SendCommand(cmd);
-                    
+            {    
+			    var resp = await remoteConsole.SendCommandAsync(cmd);
+                if(!string.IsNullOrWhiteSpace(resp))
                     ConsoleText += resp + "\n";
-                }).Start();
             }
         }
     }
