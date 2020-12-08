@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+             xmlns:vm="clr-namespace:Rcon.ViewModels;assembly=Rcon" 
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Rcon.Views.RemoteConsole">
+    <UserControl.DataContext>
+        <vm:RemoteConsoleViewModel/>
+    </UserControl.DataContext>
+  <Grid ColumnDefinitions="1*,1*,1*,0.5*" RowDefinitions="50, 5*, 50">
+    <TextBox Margin="5" Watermark="IP-address" Text="{Binding IP}"/>
+    <TextBox Margin="5" Grid.Column="1" Watermark="Server port" Text="{Binding Port}"/>
+    <TextBox Margin="5" Grid.Column="2" Watermark="Server rcon password" Text="{Binding RconPassword}"/>
+    <Button Margin="5" Grid.Column="3" Content="Connect" Command="{Binding Connect}" />
+    
+      <Border Margin="5" Grid.ColumnSpan="4" Grid.Row="1" BorderThickness="1" BorderBrush="#eeeeee">
+      <ScrollViewer  >    
+        <TextBlock Margin="2"  FontSize="22" Foreground="#00aa00" Text="{Binding ConsoleText}"/>
+    </ScrollViewer>
+      </Border>
+    <TextBox Margin="5" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Command}"/>
+    <Button Margin="5" Grid.Column="3" Grid.Row="2" Content="Send" Command="{Binding SendCommand}"/>
+  </Grid>
+</UserControl>
