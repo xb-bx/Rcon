@@ -34,8 +34,6 @@ namespace Rcon.ViewModels
         private RemoteConsole remoteConsole = new RemoteConsole(null, 0, null);
         public async void Connect()
         {
-            System.Console.WriteLine($"0 Connecting to {IP}:{Port}");
-
             remoteConsole.IP = IP;
             remoteConsole.Port = int.Parse(Port);
             remoteConsole.Password = RconPassword;
@@ -48,8 +46,8 @@ namespace Rcon.ViewModels
         public async void SendCommand(){
             var cmd = Command.Trim();
             Command = string.Empty;
-            if(!string.IsNullOrWhiteSpace(cmd))
-            {    
+            if(!string.IsNullOrWhiteSpace(cmd) && remoteConsole.IsConnected)
+            {   
 			    var resp = await remoteConsole.SendCommandAsync(cmd);
                 if(!string.IsNullOrWhiteSpace(resp))
                     ConsoleText += resp;

@@ -34,7 +34,11 @@ namespace Rcon.Models
         /// Server's rcon password
         /// </summary>
         public string Password { get; set; }
-
+		
+		
+		public bool IsConnected {get;private set;}
+		
+		
         private string challenge;
 
         public UdpClient Client { get; set; }
@@ -65,6 +69,7 @@ namespace Rcon.Models
                 Client.Client.SendTimeout = 1000;
                 if (SendCommand("console").Contains("console"))
                 {
+					IsConnected = true;
                     return true;
                 }
             }
@@ -80,6 +85,10 @@ namespace Rcon.Models
 
         public string SendCommand(string command)
         {
+			if(!IsConnected)
+			{
+				return "Connect before send command";
+			}
             if (string.IsNullOrWhiteSpace(challenge))
             {
                 AcceptChallenge();
@@ -109,6 +118,7 @@ namespace Rcon.Models
             }
             catch (SocketException e) when (e.SocketErrorCode == SocketError.TimedOut)
             {
+				IsConnected = false;
             } 
             var res = sb.ToString();
             return res.Length == 0 ? "Unable to get response from server" : res.Substring(1);
